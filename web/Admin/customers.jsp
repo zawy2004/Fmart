@@ -224,8 +224,11 @@
                                                             <td>${user.studentID}</td>
                                                             <td>${user.department}</td>
                                                             <td>
+                                                                <a href="/Supermarket_FMart/UserManagementServlet?action=view&id=${user.userID}" class="btn btn-sm btn-primary">View</a>
                                                                 <a href="/Supermarket_FMart/UserManagementServlet?action=edit&id=${user.userID}" class="btn btn-sm btn-primary">Edit</a>
-                                                                <a href="users?action=delete&id=${user.userID}" class="btn btn-sm btn-danger" onclick="return confirm('Delete this user?')">Delete</a>
+                                                                <a href="${pageContext.request.contextPath}/UserManagementServlet?action=delete&id=${user.userID}" 
+                                                                   class="btn btn-sm btn-danger" 
+                                                                   onclick="return confirm('Delete this user?')">Delete</a>
                                                             </td>
                                                         </tr>
                                                     </c:forEach>

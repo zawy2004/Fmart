@@ -4,10 +4,9 @@
  */
 package controller.admin;
 
-
-
 import dao.UserDAO;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,9 +14,12 @@ import model.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
+@MultipartConfig // ✅ Bắt buộc để xử lý file upload
 public class UserManagementServlet extends HttpServlet {
+
     private UserDAO userDAO;
 
     @Override
@@ -35,9 +37,14 @@ public class UserManagementServlet extends HttpServlet {
                 listUsers(request, response);
             } else {
                 switch (action) {
-                    case "view" -> viewUser(request, response);
-                    case "edit" -> showEditForm(request, response);
-                    default -> listUsers(request, response);
+                    case "view" ->
+                        viewUser(request, response);
+                    case "edit" ->
+                        showEditForm(request, response);
+                    case "delete" ->
+                        deleteUser(request, response);
+                    default ->
+                        listUsers(request, response);
                 }
             }
         } catch (SQLException e) {
@@ -51,10 +58,10 @@ public class UserManagementServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         try {
-            if ("update".equals(action)) {
+            if ("edit".equals(action)) {
                 updateUser(request, response);
             } else {
-                response.sendRedirect("users");
+                response.sendRedirect("UserManagementServlet");
             }
         } catch (SQLException e) {
             throw new ServletException(e);
@@ -85,21 +92,72 @@ public class UserManagementServlet extends HttpServlet {
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
+            throws SQLException, ServletException, IOException {
+
+        // Lấy dữ liệu từ form
         int id = Integer.parseInt(request.getParameter("id"));
         String fullName = request.getParameter("fullName");
         String email = request.getParameter("email");
         String phone = request.getParameter("phoneNumber");
         String address = request.getParameter("address");
+        String gender = request.getParameter("gender");
+        String dobStr = request.getParameter("dateOfBirth");
+        String roleIdStr = request.getParameter("roleID");
+        String studentId = request.getParameter("studentID");
+        String department = request.getParameter("department");
 
-        User user = userDAO.getUserById(id);
-        if (user != null) {
-            user.setFullName(fullName);
-            user.setEmail(email);
-            user.setPhoneNumber(phone);
-            user.setAddress(address);
-            userDAO.updateUser(user);
+        // Giả sử ảnh vẫn giữ nguyên hoặc đã upload xử lý riêng
+        //String profileImageUrl = "images/avatar/img-1.jpg"; // Hoặc lấy từ session/file upload
+        // Chuyển đổi kiểu dữ liệu
+        Date dateOfBirth = null;
+        if (dobStr != null && !dobStr.isEmpty()) {
+            try {
+                dateOfBirth = java.sql.Date.valueOf(dobStr); // yyyy-MM-dd format
+            } catch (IllegalArgumentException e) {
+                dateOfBirth = null;
+            }
         }
-        response.sendRedirect("users");
+
+        int roleID = roleIdStr != null ? Integer.parseInt(roleIdStr) : 1;
+
+        // Tạo đối tượng User mới
+        User user = new User();
+        user.setUserID(id);
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setPhoneNumber(phone);
+        user.setAddress(address);
+        user.setGender(gender);
+        user.setDateOfBirth(dateOfBirth);
+        user.setRoleID(roleID);
+        //user.setProfileImageUrl(profileImageUrl);
+        user.setStudentID(studentId);
+        user.setDepartment(department);
+        user.setIsActive(true); // hoặc lấy từ checkbox nếu có
+
+        // Gọi DAO để update
+        boolean success = userDAO.updateUser(user);
+
+        if (success) {
+            response.sendRedirect("UserManagementServlet"); // quay lại danh sách
+        } else {
+            request.setAttribute("error", "Cập nhật thất bại");
+
+            request.getRequestDispatcher("/Admin/customer_edit.jsp").forward(request, response);
+        }
     }
+
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        boolean success = userDAO.deleteUser(id);
+
+        if (success) {
+            response.sendRedirect("UserManagementServlet");
+        } else {
+            request.setAttribute("error", "Xoá người dùng thất bại!");
+            listUsers(request, response); // hiển thị lại danh sách kèm thông báo
+        }
+    }
+
 }

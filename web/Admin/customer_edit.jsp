@@ -1,3 +1,8 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@ page import="java.util.List, model.User" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -170,8 +175,8 @@
                                     <div class="card-title-2">
                                         <h4>Edit Customer</h4>
                                     </div>
-                                    <form action="${pageContext.request.contextPath}/users" method="post" enctype="multipart/form-data">
-                                        <input type="hidden" name="action" value="update">
+                                    <form action="${pageContext.request.contextPath}/UserManagementServlet" method="post" >
+                                        <input type="hidden" name="action" value="edit">
                                         <input type="hidden" name="id" value="${user.userID}">
 
                                         <div class="form-group">
@@ -194,19 +199,7 @@
                                             <input type="text" name="phoneNumber" class="form-control" value="${user.phoneNumber}" placeholder="Enter Phone Number">
                                         </div>
 
-                                        <div class="form-group">
-                                            <label class="form-label">Profile Image</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                    <input type="file" name="profileImage" class="custom-file-input" id="inputGroupFile04">
-                                                    <label class="custom-file-label" for="inputGroupFile04">Choose Image</label>
-                                                </div>
-                                            </div>
-                                            <div class="add-customer-img">
-                                                <img src="${user.profileImageUrl}" alt="Current Image" width="100">
-                                            </div>
-                                        </div>
-
+                                       
                                         <div class="form-group">
                                             <label class="form-label">Address</label>
                                             <textarea name="address" class="form-control" placeholder="Enter Address">${user.address}</textarea>
@@ -257,7 +250,7 @@
                 <footer class="py-4 bg-footer mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted-1">© 2025 <b>FMart Supermarket</b>. by <a href="https://themeforest.net/user/gambolthemes">FMartlthemes</a></div>
+                            <div class="text-muted-1">Â© 2025 <b>FMart Supermarket</b>. by <a href="https://themeforest.net/user/gambolthemes">FMartlthemes</a></div>
                             <div class="footer-links">
                                 <a href="http://gambolthemes.net/html-items/gambo_supermarket_demo/privacy_policy.jsp">Privacy Policy</a>
                                 <a href="http://gambolthemes.net/html-items/gambo_supermarket_demo/term_and_conditions.jsp">Terms &amp; Conditions</a>
