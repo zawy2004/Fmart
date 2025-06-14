@@ -3,6 +3,7 @@ package model;
 import java.util.Date;
 
 public class User {
+
     private int userID;
     private String username;
     private String email;
@@ -19,14 +20,15 @@ public class User {
     private String profileImageUrl;
     private String studentID;
     private String department;
+    private String roleName;
 
     // Constructors, Getters, and Setters...
-
-    public User() {}
+    public User() {
+    }
 
     public User(int userID, String username, String email, String passwordHash, String fullName, String phoneNumber,
-                String address, Date dateOfBirth, String gender, int roleID, boolean isActive,
-                Date createdDate, Date lastLoginDate, String profileImageUrl, String studentID, String department) {
+            String address, Date dateOfBirth, String gender, int roleID, boolean isActive,
+            Date createdDate, Date lastLoginDate, String profileImageUrl, String studentID, String department) {
         this.userID = userID;
         this.username = username;
         this.email = email;
@@ -46,7 +48,6 @@ public class User {
     }
 
     // Getters and Setters here
-
     public int getUserID() {
         return userID;
     }
@@ -174,5 +175,13 @@ public class User {
     public void setDepartment(String department) {
         this.department = department;
     }
-    
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
 }

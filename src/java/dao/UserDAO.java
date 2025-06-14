@@ -11,31 +11,34 @@ public class UserDAO {
 
     public List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM Users";
+         String query = "SELECT u.*, r.RoleName FROM Users u JOIN Roles r ON u.RoleID = r.RoleID";
 
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
-            while (rs.next()) {
-                User user = new User(
-                        rs.getInt("UserID"),
-                        rs.getString("Username"),
-                        rs.getString("Email"),
-                        rs.getString("PasswordHash"),
-                        rs.getString("FullName"),
-                        rs.getString("PhoneNumber"),
-                        rs.getString("Address"),
-                        rs.getDate("DateOfBirth"),
-                        rs.getString("Gender"),
-                        rs.getInt("RoleID"),
-                        rs.getBoolean("IsActive"),
-                        rs.getTimestamp("CreatedDate"),
-                        rs.getTimestamp("LastLoginDate"),
-                        rs.getString("ProfileImageUrl"),
-                        rs.getString("StudentID"),
-                        rs.getString("Department")
-                );
+             while (rs.next()) {
+                User user = new User();
+                user.setUserID(rs.getInt("UserID"));
+                user.setUsername(rs.getString("Username"));
+                user.setEmail(rs.getString("Email"));
+                user.setPasswordHash(rs.getString("PasswordHash"));
+                user.setFullName(rs.getString("FullName"));
+                user.setPhoneNumber(rs.getString("PhoneNumber"));
+                user.setAddress(rs.getString("Address"));
+                user.setDateOfBirth(rs.getDate("DateOfBirth"));
+                user.setGender(rs.getString("Gender"));
+                user.setRoleID(rs.getInt("RoleID"));
+                user.setIsActive(rs.getBoolean("IsActive"));
+                user.setCreatedDate(rs.getTimestamp("CreatedDate"));
+                user.setLastLoginDate(rs.getTimestamp("LastLoginDate"));
+                user.setProfileImageUrl(rs.getString("ProfileImageUrl"));
+                user.setStudentID(rs.getString("StudentID"));
+                user.setDepartment(rs.getString("Department"));
+
+                // 🌟 Gán RoleName từ JOIN
+                user.setRoleName(rs.getString("RoleName"));
+
                 users.add(user);
             }
         }
@@ -131,4 +134,5 @@ public class UserDAO {
             return stmt.executeUpdate() > 0;
         }
     }
+    
 }

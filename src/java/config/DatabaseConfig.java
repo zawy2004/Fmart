@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * @author thanh
  */
 public class DatabaseConfig {
-    private static final String URL = "jdbc:sqlserver://zawy-laptop;databaseName=Store;encrypt=false";
+    private static final String URL = "jdbc:sqlserver://zawy-laptop;databaseName=Fmart;encrypt=false";
     private static final String USER = "sa";
     private static final String PASSWORD = "1234";
 
@@ -23,6 +23,18 @@ public class DatabaseConfig {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (ClassNotFoundException e) {
             throw new SQLException("JDBC Driver not found", e);
+        }
+    }
+     public static void main(String[] args) {
+        try (Connection conn = DatabaseConfig.getConnection()) {
+            if (conn != null && !conn.isClosed()) {
+                System.out.println("✅ Kết nối cơ sở dữ liệu thành công!");
+            } else {
+                System.out.println("❌ Kết nối thất bại.");
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Lỗi khi kết nối đến cơ sở dữ liệu:");
+            e.printStackTrace();
         }
     }
     

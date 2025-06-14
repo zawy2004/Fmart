@@ -577,3 +577,28 @@ BEGIN
     WHERE dd.DispatchID = @DispatchID;
 END;
 GO
+INSERT INTO Users (
+    Username, Email, PasswordHash, FullName, PhoneNumber,
+    Address, DateOfBirth, Gender, RoleID, IsActive,
+    ProfileImageUrl, StudentID, Department
+)
+VALUES
+-- Admin user
+('admin01', 'admin01@example.com', 'hashedpassword123', 'Nguyen Van A', '0901123456',
+ '123 Admin St, Hanoi', '1990-05-10', 'Male', 3, 1,
+ 'images/admin01.png', NULL, 'IT'),
+
+-- Customer user
+('customer01', 'customer01@example.com', 'hashedpassword234', 'Tran Thi B', '0912345678',
+ '456 Customer Rd, HCMC', '1995-07-20', 'Female', 1, 1,
+ 'images/customer01.png', 'ST123456', 'Marketing'),
+
+-- Manager user
+('manager01', 'manager01@example.com', 'hashedpassword345', 'Le Van C', '0987654321',
+ '789 Manager Ave, Da Nang', '1985-03-15', 'Male', 4, 1,
+ 'images/manager01.png', NULL, 'Operations'),
+
+-- Staff user
+('staff01', 'staff01@example.com', 'hashedpassword456', 'Pham Thi D', '0932111222',
+ '321 Staff Blvd, Can Tho', '1992-11-01', 'Female', 2, 1,
+ 'images/staff01.png', NULL, 'Support');
