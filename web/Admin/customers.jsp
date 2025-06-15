@@ -193,8 +193,7 @@
                                                         <th>Active</th>
                                                         <th>Created Date</th>
                                                         <th>Last Login</th>
-                                                        <th>Student ID</th>
-                                                        <th>Department</th>
+                                                       
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -212,17 +211,16 @@
                                                             <td>${user.address}</td>
                                                             <td>${user.gender}</td>
                                                             <td>${user.dateOfBirth}</td>
-                                                            <td>${user.roleName}</td> <!-- Cần JOIN từ bảng Roles -->
+                                                            <td>${user.roleName}</td> <!-- Cáº§n JOIN tá»« báº£ng Roles -->
                                                             <td><c:choose>
-                                                                    <c:when test="${user.isActive}">✅</c:when>
+                                                                    <c:when test="${user.isActive}">Y</c:when>
 
-                                                                    <c:otherwise>❌</c:otherwise>
+                                                                    <c:otherwise>N</c:otherwise>
                                                                 </c:choose>
                                                             </td>
                                                             <td>${user.createdDate}</td>
                                                             <td>${user.lastLoginDate}</td>
-                                                            <td>${user.studentID}</td>
-                                                            <td>${user.department}</td>
+                                                            
                                                             <td>
                                                                 <a href="/Supermarket_FMart/UserManagementServlet?action=view&id=${user.userID}" class="btn btn-sm btn-primary">View</a>
                                                                 <a href="/Supermarket_FMart/UserManagementServlet?action=edit&id=${user.userID}" class="btn btn-sm btn-primary">Edit</a>
@@ -246,7 +244,7 @@
                 <footer class="py-4 bg-footer mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted-1">Â© 2025 <b>FMart Supermarket</b>. by <a href="https://themeforest.net/user/gambolthemes">FMartlthemes</a></div>
+                            <div class="text-muted-1">ÃÂ© 2025 <b>FMart Supermarket</b>. by <a href="https://themeforest.net/user/gambolthemes">FMartlthemes</a></div>
                             <div class="footer-links">
                                 <a href="http://gambolthemes.net/html-items/gambo_supermarket_demo/privacy_policy.jsp">Privacy Policy</a>
                                 <a href="http://gambolthemes.net/html-items/gambo_supermarket_demo/term_and_conditions.jsp">Terms &amp; Conditions</a>

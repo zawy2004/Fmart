@@ -17,14 +17,14 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-@MultipartConfig // ✅ Bắt buộc để xử lý file upload
+@MultipartConfig 
 public class UserManagementServlet extends HttpServlet {
 
     private UserDAO userDAO;
 
     @Override
     public void init() {
-        userDAO = new UserDAO();  // đảm bảo UserDAO có constructor không tham số
+        userDAO = new UserDAO();  
     }
 
     @Override
@@ -103,8 +103,7 @@ public class UserManagementServlet extends HttpServlet {
         String gender = request.getParameter("gender");
         String dobStr = request.getParameter("dateOfBirth");
         String roleIdStr = request.getParameter("roleID");
-        String studentId = request.getParameter("studentID");
-        String department = request.getParameter("department");
+       
 
         // Giả sử ảnh vẫn giữ nguyên hoặc đã upload xử lý riêng
         //String profileImageUrl = "images/avatar/img-1.jpg"; // Hoặc lấy từ session/file upload
@@ -130,9 +129,7 @@ public class UserManagementServlet extends HttpServlet {
         user.setGender(gender);
         user.setDateOfBirth(dateOfBirth);
         user.setRoleID(roleID);
-        //user.setProfileImageUrl(profileImageUrl);
-        user.setStudentID(studentId);
-        user.setDepartment(department);
+       
         user.setIsActive(true); // hoặc lấy từ checkbox nếu có
 
         // Gọi DAO để update

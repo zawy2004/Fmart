@@ -9,38 +9,41 @@ import java.util.List;
 
 public class UserDAO {
 
-    public List<User> getAllUsers() throws SQLException {
+      public List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
-        String query = "SELECT UserID, Username, Email, PasswordHash, FullName, PhoneNumber, Address, DateOfBirth, Gender, RoleID, IsActive, CreatedDate, LastLoginDate, ProfileImageUrl FROM Users";
+         String query = "SELECT u.*, r.RoleName FROM Users u JOIN Roles r ON u.RoleID = r.RoleID";
 
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
-            while (rs.next()) {
-                User user = new User(
-                        rs.getInt("UserID"),
-                        rs.getString("Username"),
-                        rs.getString("Email"),
-                        rs.getString("PasswordHash"),
-                        rs.getString("FullName"),
-                        rs.getString("PhoneNumber"),
-                        rs.getString("Address"),
-                        rs.getDate("DateOfBirth"),
-                        rs.getString("Gender"),
-                        rs.getInt("RoleID"),
-                        rs.getBoolean("IsActive"),
-                        rs.getTimestamp("CreatedDate"),
-                        rs.getTimestamp("LastLoginDate"),
-                        rs.getString("ProfileImageUrl")
-                );
+             while (rs.next()) {
+                User user = new User();
+                user.setUserID(rs.getInt("UserID"));
+                user.setUsername(rs.getString("Username"));
+                user.setEmail(rs.getString("Email"));
+                user.setPasswordHash(rs.getString("PasswordHash"));
+                user.setFullName(rs.getString("FullName"));
+                user.setPhoneNumber(rs.getString("PhoneNumber"));
+                user.setAddress(rs.getString("Address"));
+                user.setDateOfBirth(rs.getDate("DateOfBirth"));
+                user.setGender(rs.getString("Gender"));
+                user.setRoleID(rs.getInt("RoleID"));
+                user.setIsActive(rs.getBoolean("IsActive"));
+                user.setCreatedDate(rs.getTimestamp("CreatedDate"));
+                user.setLastLoginDate(rs.getTimestamp("LastLoginDate"));
+                user.setProfileImageUrl(rs.getString("ProfileImageUrl"));
+             
+
+                // 🌟 Gán RoleName từ JOIN
+                user.setRoleName(rs.getString("RoleName"));
+
                 users.add(user);
             }
         }
-
         return users;
-    }
-
+      }
+      
     public User getUserById(int userId) throws SQLException {
         String query = "SELECT UserID, Username, Email, PasswordHash, FullName, PhoneNumber, Address, DateOfBirth, Gender, RoleID, IsActive, CreatedDate, LastLoginDate, ProfileImageUrl FROM Users WHERE UserID = ?";
         try (Connection conn = DatabaseConfig.getConnection();
@@ -94,11 +97,12 @@ public class UserDAO {
         }
     }
 
-    public boolean updateUser(User user) throws SQLException {
-        String query = "UPDATE Users SET Email = ?, FullName = ?, PhoneNumber = ?, Address = ?, DateOfBirth = ?, Gender = ?, RoleID = ?, IsActive = ?, CreatedDate = ?, ProfileImageUrl = ? WHERE UserID = ?";
+     public boolean updateUser(User user) throws SQLException {
+        String query = "UPDATE Users SET Email = ?, FullName = ?, PhoneNumber = ?, Address = ?, DateOfBirth = ?, Gender = ?, RoleID = ?, IsActive = ?, ProfileImageUrl = ? WHERE UserID = ?";
 
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getFullName());
             stmt.setString(3, user.getPhoneNumber());
@@ -107,13 +111,14 @@ public class UserDAO {
             stmt.setString(6, user.getGender());
             stmt.setInt(7, user.getRoleID());
             stmt.setBoolean(8, user.isIsActive());
-            stmt.setTimestamp(9, new Timestamp(user.getCreatedDate().getTime()));
-            stmt.setString(10, user.getProfileImageUrl());
-            stmt.setInt(11, user.getUserID());
+            stmt.setString(9, user.getProfileImageUrl());
+         
+            stmt.setInt(10, user.getUserID());
 
             return stmt.executeUpdate() > 0;
         }
     }
+
 
     public boolean deleteUser(int userId) throws SQLException {
         String query = "DELETE FROM Users WHERE UserID = ?";

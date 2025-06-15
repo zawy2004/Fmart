@@ -18,6 +18,7 @@ public class User {
     private Date createdDate;
     private Date lastLoginDate;
     private String profileImageUrl;
+    private String RoleName;
 
     // Constructors
     public User() {}
@@ -40,6 +41,15 @@ public class User {
         setLastLoginDate(lastLoginDate);
         setProfileImageUrl(profileImageUrl);
     }
+
+    public String getRoleName() {
+        return RoleName;
+    }
+
+    public void setRoleName(String RoleName) {
+        this.RoleName = RoleName;
+    }
+    
 
     // Getters and Setters with validation
     public int getUserID() {
